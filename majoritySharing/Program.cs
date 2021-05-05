@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace majoritySharing
 {
@@ -20,7 +17,7 @@ namespace majoritySharing
                 if (n % 2 == 0 || n == 1) Console.WriteLine("N должно быть нечётное и больше 1, повторите ввод: ");
             }
 
-            //Пороговое число
+            //Пороговое число (минимальное число сотрудников, которые могут восстановить ключ)
             int h = (n + 1) / 2;
             //Количество фрагментов ключа
             Program program = new Program();
@@ -36,10 +33,9 @@ namespace majoritySharing
 
             for(int k = 0; k < segments; k++)
             {
-                string part = "";
                 while (true)
                 {
-                    part = "";
+                    string part = "";
                     //Генерируем неповторяющиеся позиции для n - h нулей в кодах
                     for (int p = 0; p < (n - h); p++)
                     {
@@ -58,6 +54,31 @@ namespace majoritySharing
                         break;
                     }
                 }
+            }
+
+            //Заполняем матрицу доступа к фрагментам ключа для пользователей
+            for(int i = 0; i < accessMap.GetLength(0); i++)
+            {
+                //идём по столбцам
+                for(int j = 0; j < accessMap.GetLength(1); j++)
+                {
+                    //для данной строки получаем распределение нулей
+                    char[] zero = zeroIndex[i].ToCharArray();
+                    char zeroPoint = Convert.ToChar(j.ToString());
+                    if (zero.Contains(zeroPoint)) accessMap[i, j] = 0;
+                    else accessMap[i, j] = 1;
+                }
+            }
+
+            //Выводим матрицу разделения секрета
+            Console.WriteLine("Матрица мажоритарного разделения секрета для {0} сотрудников: ", n);
+            for (int i = 0; i < accessMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < accessMap.GetLength(1); j++)
+                {
+                    Console.Write(accessMap[i, j] + "  ");
+                }
+                Console.WriteLine();
             }
 
             Console.ReadKey();
