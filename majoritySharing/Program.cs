@@ -42,6 +42,7 @@ namespace majoritySharing
                 }
             }
             Console.WriteLine();
+
             //Вектор ключ имеет формат {a1 ; b2; c3 ; ...}, все элементы меньше заданного простого числа simpleNum
             List<int> key = new List<int>();
             Console.WriteLine("Сколько элементов в вектор ключе? ");
@@ -61,6 +62,19 @@ namespace majoritySharing
                     Console.WriteLine("Недопустимый элемент вектор ключа! Повторите ввод");
                     goto input;
                 }
+            }
+            Console.WriteLine();
+
+            //Создаём объект класса FragKey и генерируем фрагменты вектр ключа
+            FragKey frag = new FragKey();
+            int[,] segmentsKey = frag.Frag(segments, simpleNum, ref key);
+
+            //Выводим сегменты ключа на консоль
+            Console.WriteLine("Сегменты вектор ключа: ");
+            for(int i = 0; i < segmentsKey.GetLength(0); i++)
+            {
+                for (int j = 0; j < segmentsKey.GetLength(1); j++) Console.Write(segmentsKey[i, j] + " ");
+                Console.WriteLine();
             }
             Console.WriteLine();
 
